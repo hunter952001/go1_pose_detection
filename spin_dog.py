@@ -64,17 +64,17 @@ def spin_right():
                 print(f'FootForceEst:\t\t{hstate.footForceEst}')
                 print('+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=')
 
-        if(motiontime > 0 and motiontime < 1000):
+        if(motiontime > 0 and motiontime < 550):
             hcmd.mode = MotorModeHigh.VEL_WALK
             hcmd.gaitType = GaitType.TROT
             hcmd.velocity = [0.0, 0.0]
-            hcmd.yawSpeed = 1
+            hcmd.yawSpeed = -0.5
             hcmd.footRaiseHeight = 0.1
 
         cmd_bytes = hcmd.buildCmd(debug=False)
         conn.send(cmd_bytes)
 
-        if motiontime > 1000:
+        if motiontime > 550:
             break
     # time.sleep(0.1)
 
@@ -128,17 +128,17 @@ def spin_left():
                 print(f'FootForceEst:\t\t{hstate.footForceEst}')
                 print('+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=')
 
-        if(motiontime > 0 and motiontime < 1000):
+        if(motiontime > 0 and motiontime < 550):
             hcmd.mode = MotorModeHigh.VEL_WALK
             hcmd.gaitType = GaitType.TROT
             hcmd.velocity = [0.0, 0.0]
-            hcmd.yawSpeed = -1
+            hcmd.yawSpeed = 0.5
             hcmd.footRaiseHeight = 0.1
 
         cmd_bytes = hcmd.buildCmd(debug=False)
         conn.send(cmd_bytes)
 
-        if motiontime > 1000:
+        if motiontime > 550:
             break
     # time.sleep(0.1)
 
@@ -195,7 +195,7 @@ def strafe_right():
         if(motiontime > 0 and motiontime < 1000):
             hcmd.mode = MotorModeHigh.VEL_WALK
             hcmd.gaitType = GaitType.TROT
-            hcmd.velocity = [0.0, 0.2]
+            hcmd.velocity = [0.0, -0.2]
             hcmd.yawSpeed = 0
             hcmd.footRaiseHeight = 0.1
 
@@ -259,7 +259,7 @@ def strafe_left():
         if(motiontime > 0 and motiontime < 1000):
             hcmd.mode = MotorModeHigh.VEL_WALK
             hcmd.gaitType = GaitType.TROT
-            hcmd.velocity = [0.0, -0.2]
+            hcmd.velocity = [0.0, 0.2]
             hcmd.yawSpeed = 0
             hcmd.footRaiseHeight = 0.1
 
@@ -452,7 +452,7 @@ def turn_around():
             hcmd.mode = MotorModeHigh.VEL_WALK
             hcmd.gaitType = GaitType.TROT
             hcmd.velocity = [0.0, 0.0]
-            hcmd.yawSpeed = 0.7
+            hcmd.yawSpeed = 1
             hcmd.footRaiseHeight = 0.1
 
         cmd_bytes = hcmd.buildCmd(debug=False)
