@@ -49,6 +49,16 @@ pip install -r requirements.txt
 
 pip install -r requirements.txt
 
+## How to Use
+
+1. Once the go1 pro is turned on, connect to the robot using your computer's network settings. 
+2. In the go1_pose_detection directory, run receiver.py first in its own terminal.
+3. Then, in another terminal, run either new_pose.py (for body poses) or new_hands.py (for hand poses). Make sure webacam is setup before running
+![Screenshot from 2023-07-18 15-15-51](https://github.com/hunter952001/go1_pose_detection/assets/85843642/bf57d017-5ae8-4491-b90f-1bcb41da6e4d)
+![talk to the](https://github.com/hunter952001/go1_pose_detection/assets/85843642/707b819b-5088-426f-b133-24ba6957b051)
+
+
+
 ## Acknowledgements
 
  - [Bleed AI Academy: Real-Time 3D Pose Detection and Classification](https://www.youtube.com/watch?v=aySurynUNAw)
