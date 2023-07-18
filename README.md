@@ -10,6 +10,11 @@ control go1 pro robot using hand/body poses using mediapipe
 
 - [@TEvettsUF](https://www.github.com/TEvettsUF)
 
+## Using Body Gestures
+![Using Body Gestures](https://github.com/hunter952001/go1_pose_detection/assets/85843642/bb78f0c2-2ac9-4ee0-966f-85ccd96f9523)
+
+## Using Hand Gestures
+![Using Hand Gestures](https://github.com/hunter952001/go1_pose_detection/assets/85843642/a2c34855-b096-4bbe-b385-11a91f9c1860)
 
 ## Installation of Mediapipe
 
@@ -50,9 +55,5 @@ pip install -r requirements.txt
  - [Bin4ry/free-dog-sdk Github](https://github.com/Bin4ry/free-dog-sdk)
 
 
-
-## Screenshots
-
-![App Screenshot](https://imgur.com/pdCpgEl)
 
 
