@@ -112,7 +112,7 @@ with mp_hands.Hands(
                         label = 'D1va, Strafe Left'
                     else:
                         if tip_pip_index_delta_x>0:
-                            label = 'D1va, Spin Right'
+                            label = 'D1va, Spin Left'
                         else:
                             label = 'D1va, Lay Down'
                 
@@ -122,7 +122,7 @@ with mp_hands.Hands(
                         label = 'D1va, Strafe Right'
                     else:
                         if tip_pip_index_delta_x<0:
-                            label = 'D1va, Spin Left'
+                            label = 'D1va, Spin Right'
                         else:
                             label = 'D1va, Stand Up'
                                 
