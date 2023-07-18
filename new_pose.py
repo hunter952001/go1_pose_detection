@@ -6,6 +6,7 @@ import mediapipe as mp
 import matplotlib.pyplot as plt
 import socket
 import time
+from collections import deque
 
 # This line was added by Trevor Evetts.
 # I believe there's been an update to the syntax since this code was established, and so this is now required to model the figure in 3D space.
@@ -23,6 +24,7 @@ sock.connect((address, port))
 
 # Initializing mediapipe pose class.
 mp_pose = mp.solutions.pose
+label_history = deque(maxlen=4)
 
 # Setting up the Pose function.
 pose = mp_pose.Pose(static_image_mode=True, min_detection_confidence=0.3, model_complexity=2)
@@ -136,7 +138,7 @@ def classifyPose(landmarks, output_image, display=False):
     label = 'Unknown Pose'
 
     # Specify the color (Red) with which the label will be written on the image.
-    color = (0, 0, 255)
+    text_color = (0, 0, 255)
     
     # Calculate the required angles.
     #----------------------------------------------------------------------------------------------------------------
@@ -188,26 +190,101 @@ def classifyPose(landmarks, output_image, display=False):
             if right_shoulder_angle > 0 and right_shoulder_angle < 50 and left_shoulder_angle > 70 and left_shoulder_angle < 120:
 
                 # Specify the label of the pose that is tree pose.
-                label = 'D1va, Go Left'
+                label = 'D1va, Strafe Right'
         
             # Check if shoulders are at the required angle.
             if left_shoulder_angle < 50 and left_shoulder_angle > 0 and right_shoulder_angle < 120 and right_shoulder_angle > 70:
 
                 # Specify the label of the pose that is tree pose.
-                label = 'D1va, Go Right'
+                label = 'D1va, Strafe Left'
+    
+    # Checks to see if legs are straight.
+    if left_knee_angle > 160 and left_knee_angle < 195 and right_knee_angle > 160 and right_knee_angle < 195:
+
+        # Checks to see if left shoulder is up and other is down.
+        if right_shoulder_angle > 0 and right_shoulder_angle < 50 and left_shoulder_angle > 70 and left_shoulder_angle < 120:
+
+            #Checks to see if left elbow is bent.
+            if right_elbow_angle > 155 and right_elbow_angle < 195 and left_elbow_angle > 70 and left_elbow_angle < 120:
+
+                label = 'D1va, Spin Right'
+
+        # Checks to see if right shoulder is up and other is down.
+        if left_shoulder_angle > 0 and left_shoulder_angle < 50 and right_shoulder_angle > 70 and right_shoulder_angle < 120:
+
+            #Checks t osee if right elbow is bent.
+            if left_elbow_angle > 155 and left_elbow_angle < 195 and right_elbow_angle > 250 and right_elbow_angle < 300:
+
+                label = 'D1va, Spin Left'
+        
+        # Checks to see if both shoulders are up.
+        if left_shoulder_angle > 70 and left_shoulder_angle < 120 and right_shoulder_angle > 70 and right_shoulder_angle < 120:
+
+            # Checks to see if both elbows are bent.
+            if left_elbow_angle > 70 and left_elbow_angle < 120 and right_elbow_angle > 250 and right_elbow_angle < 300:
+
+                label = 'D1va, Turn Around'
+
+        # Checks to see if shoulders are slightly up.
+        if left_shoulder_angle > 30 and left_shoulder_angle < 70 and right_shoulder_angle > 30 and right_shoulder_angle < 70:
+
+            # Checks to see if elbows are slightly bent.
+            if left_elbow_angle > 250 and left_elbow_angle < 300 and right_elbow_angle > 70 and right_elbow_angle < 120:
+
+                # This is a "hands on hips" position
+                label = 'D1va, Go Forward'
+
+        # Checks to see if shoulders are up.
+        if left_shoulder_angle > 70 and left_shoulder_angle < 140 and right_shoulder_angle > 70 and right_shoulder_angle < 140:
+
+            # Checks to see if elbows are bent further.
+            if left_elbow_angle > 0 and left_elbow_angle < 60 and right_elbow_angle > 300 and right_elbow_angle < 360:
+
+                # This is a "hands on head" position.
+                label = 'D1va, Go Backward'
+
+        # Checks to see if arms are up.
+        if right_shoulder_angle > 70 and right_shoulder_angle < 120 and left_shoulder_angle > 70 and left_shoulder_angle < 120:
+
+            # Checks to see if elbows are straight.
+            if right_elbow_angle > 155 and right_elbow_angle < 195 and left_elbow_angle > 155 and left_elbow_angle < 195:
+
+                label = 'D1va, Lay Down'
+        
+        # Checks to see if arms are higher than usual.
+        if right_shoulder_angle > 110 and right_shoulder_angle < 150 and left_shoulder_angle > 110 and left_shoulder_angle < 150:
+
+            # Checks to see if elbows are straight.
+            if right_elbow_angle > 155 and right_elbow_angle < 195 and left_elbow_angle > 155 and left_elbow_angle < 195:
+
+                label = 'D1va, Stand Up'
 
     #----------------------------------------------------------------------------------------------------------------
     # Check if the pose is classified successfully
-    if label != 'Unknown Pose':
+    # if label != 'Unknown Pose':
         
-        # Update the color (to green) with which the label will be written on the image.
-        color = (0, 255, 0)
-        message = label
-        # Send the message
-        sock.sendall(message.encode())
+    #     # Update the color (to green) with which the label will be written on the image.
+    #     color = (0, 255, 0)
+    #     message = label
+    #     # Send the message
+    #     sock.sendall(message.encode())
+
+    label_history.append(label)  # Add current label to the history
+
+    
+    if label != 'Unknown Pose':
+            if len(label_history) == 4 and len(set(label_history)) == 1:
+                # Check if the last 5 labels are all equal
+                label = label_history[-1]
+                text_color = (0, 255, 0)  # Update the color to green for recognized poses
+                cv2.putText(output_image, label, (10, 60), cv2.FONT_HERSHEY_PLAIN, 2, text_color, 2)
+                # Send the message
+                sock.sendall(label.encode())
     
     # Write the label on the output image. 
-    cv2.putText(output_image, label, (10, 30),cv2.FONT_HERSHEY_PLAIN, 2, color, 2)
+    #cv2.putText(output_image, label, (10, 30),cv2.FONT_HERSHEY_PLAIN, 2, color, 2)
+    else:
+        cv2.putText(output_image, label, (10, 60), cv2.FONT_HERSHEY_PLAIN, 2, text_color, 2)
     
     # Check if the resultant image is specified to be displayed.
     if display:
