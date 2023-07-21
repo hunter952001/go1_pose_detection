@@ -65,6 +65,7 @@ pip install -r requirements.txt
 
  - [Bleed AI Academy: Real-Time 3D Pose Detection and Classification](https://www.youtube.com/watch?v=aySurynUNAw)
  - [Bin4ry/free-dog-sdk Github](https://github.com/Bin4ry/free-dog-sdk)
+ - [Mediapipe Hands](https://developers.google.com/mediapipe/solutions/vision/hand_landmarker)
 
 
 
