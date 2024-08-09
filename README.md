@@ -11,6 +11,8 @@ dog password is 00000000
 
 - [@TEvettsUF](https://www.github.com/TEvettsUF)
 
+- [@heonjik](https://github.com/heonjik)
+
 ## Using Body Gestures
 ![Using Body Gestures](https://github.com/hunter952001/go1_pose_detection/assets/85843642/bb78f0c2-2ac9-4ee0-966f-85ccd96f9523)
 
